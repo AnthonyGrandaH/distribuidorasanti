@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Carrito de compra</title>
+</h:head>
+<body>
+	<div align="center">
+		<p:panel>
+			<p:staticMessage severity="info" summary="Carrito de Compra"
+				style="width: 100%" />
+		</p:panel>
+	</div>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="/menu" />
+			<p:menuitem value="Clientes" icon="pi pi-users"
+				action="#{beanVenClientes.actionMenuCliente()}" />
+			<p:menuitem value="Ventas" icon="pi pi-plus-circle"
+				action="#{beanVenCarrito.actionMenuProductos()}" />
+			<p:menuitem value="Carrito de Compra" icon="pi pi-plus-circle"
+				action="#{beanVenCarrito.actionMenuCarrito()}" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<h:form>
+			<div>
+				<div class="ui-inputgroup">
+					<p:inputText placeholder="Cedula" value="#{beanVenClientes.cedula}" />
+					<p:commandButton icon="pi pi-search" styleClass="ui-button-warning"
+						actionListener="#{beanVenClientes.actionListenerBuscarCLiente()}"
+						update=":formEdicion1"  />
+				</div>
+			</div>
+		</h:form>
+		
+		<h:form id="formEdicion1">
+		
+			<h:panelGrid columns="2">
+
+					<h:outputText value="Cedula" />
+					<h:outputText value="#{beanVenClientes.nuevoCliente.cliCedula}" />
+					<h:outputText value="Nombre" />
+					<h:outputText value="#{beanVenClientes.nuevoCliente.cliNombre}" />
+					<h:outputText value="Apellidos" />
+					<h:outputText value="#{beanVenClientes.nuevoCliente.cliApellido}" />
+					<h:outputText value="Direccion" />
+					<h:outputText value="#{beanVenClientes.nuevoCliente.cliDireccion}" />
+					<h:outputText value="Telefono" />
+					<h:outputText value="#{beanVenClientes.nuevoCliente.cliTelefono}" />
+
+			</h:panelGrid>
+		</h:form>
+
+		<h:form id="formDatos">
+			<p:dataTable value="#{beanVenCarrito.carrito}" var="p"
+				paginator="true" rows="5">
+				<p:column headerText="Codigo " filterBy="#{p.codProducto}"
+					filterMatchMode="contains">
+					<h:outputText value="#{p.codProducto}" />
+				</p:column>
+				<p:column headerText="Nombre" filterBy="#{p.proNombre}"
+					filterMatchMode="contains">
+					<h:outputText value="#{p.proNombre}" />
+				</p:column>
+				<p:column headerText="Marca" filterBy="#{p.marcaNombre}"
+					filterMatchMode="contains">
+					<h:outputText value="#{p.marcaNombre}" />
+
+				</p:column>
+				<p:column headerText="Precio">
+					<h:outputText value="#{p.proPresio}" />
+				</p:column>
+				<p:column headerText="Stock">
+					<h:outputText value="#{p.stock}" />
+				</p:column>
+				<p:column headerText="Cantidad">
+					<h:outputText value="#{p.cantidad}" />
+				</p:column>
+				<p:column headerText="OPCIONES">
+
+					<p:commandButton icon="pi pi-pencil" title="editar"
+						actionListener="#{beanVenCarrito.actionListenerSeleccionarProducto(p)}"
+						update=":formEdicion" oncomplete="PF('dlgEdicion').show();">
+					</p:commandButton>
+
+
+					<p:commandButton icon="pi pi-times-circle" title="eliminar"
+						styleClass="ui-button-danger" update="@form"
+						actionListener="#{beanVenCarrito.actionListenerEliminarCliente(p.codProducto)}">
+						<p:confirm header="Confirmación"
+							message="Desea borrar este producto?" icon="pi pi-info-circle" />
+					</p:commandButton>
+
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+	<p:dialog header="Cambiar Cantidad" widgetVar="dlgEdicion" modal="true">
+		<h:form id="formEdicion">
+		
+			<h:panelGrid columns="2">
+				<h:outputText value="Stock :" />
+				<h:outputText value="#{beanVenCarrito.editarproducto.stock}" />
+				<h:outputText value="Cantidad Actual: " />
+				<h:outputText value="#{beanVenCarrito.editarproducto.cantidad}" />
+				<h:outputText value="Cantidad Nueva :" />
+				<p:spinner value="#{beanVenCarrito.editarproducto.cantidadIngresada}" required="true"
+					requiredMessage="Debe indicar la cantidad" min="1" />
+
+				<p:commandButton value="Actualizar Producto" icon="pi pi-save"
+					actionListener="#{beanVenCarrito.actionListenerActualizarProducto()}"
+					update=":@form,:formDatos"></p:commandButton>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+		responsive="true" width="350">
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no ui-button-flat" />
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" />
+	</p:confirmDialog>
+</body>
+</html>

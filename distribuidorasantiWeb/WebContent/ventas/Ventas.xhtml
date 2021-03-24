@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Ventas de Productos</title>
+</h:head>
+<body>
+	<div align="center">
+		<p:panel>
+			<p:staticMessage severity="info" summary="Lista de productos "
+				style="width: 100%" />
+		</p:panel>
+	</div>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="/menu" />
+			<p:menuitem value="Clientes" icon="pi pi-users"
+				action="#{beanVenClientes.actionMenuCliente()}" />
+			<p:menuitem value="Ventas" icon="pi pi-plus-circle"
+				action="#{beanVenCarrito.actionMenuProductos()}" />
+			<p:menuitem value="Carrito de Compra" icon="pi pi-plus-circle"
+				action="#{beanVenCarrito.actionMenuCarrito()}" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<h:form>
+			<div>
+				<div class="ui-inputgroup">
+					<p:inputText placeholder="Nombre Producto"
+						value="#{beanVenCarrito.nombreProducto}" />
+					<p:commandButton icon="pi pi-search" styleClass="ui-button-warning"
+						actionListener="#{beanVenCarrito.actionListenerBuscarProductoByNombre()}"
+						update=":formEdicion1" />
+				</div>
+				<div class="ui-inputgroup">
+					<p:inputText placeholder="Marca Producto"
+						value="#{beanVenCarrito.nombreMarca}" />
+					<p:commandButton icon="pi pi-search" styleClass="ui-button-warning"
+						actionListener="#{beanVenCarrito.actionListenerBuscarProductobyMarca()}"
+						update=":formEdicion1" />
+				</div>
+			</div>
+		</h:form>
+		<h:form id="formEdicion1">
+			<p:dataGrid value="#{beanVenCarrito.listado}" var="p">
+				<p:panel header="Producto">
+					<h:panelGrid columns="2">
+						<h:outputText value="Codigo: " />
+						<h:outputText value="#{p.codProducto}" />
+						<h:outputText value="Nombre: " />
+						<h:outputText value="#{p.proNombre}" />
+						<h:outputText value="Marca: " />
+						<h:outputText value="#{p.marcaNombre}" />
+						<h:outputText value="Precio: " />
+						<h:outputText value="#{p.proPresio}" />
+						<h:outputText value="Stock: " />
+						<h:outputText value="#{p.stock}" />
+						<h:outputText value="Cantidad: " />
+						<p:spinner value="#{p.cantidadIngresada}" required="true"
+							requiredMessage="Ingrese la cantidad" min="0" />
+						<p:commandButton value="Agregar" icon="pi pi-shopping-cart" update="@form"
+							actionListener="#{beanVenCarrito.actionListenerAgregerProducto(p)}" />
+					</h:panelGrid>
+				</p:panel>
+			</p:dataGrid>
+		</h:form>
+	</p:panel>
+
+
+
+</body>
+</html>
