@@ -1,4 +1,4 @@
-package distribuidorasanto.controller.auditoria;
+package distribuidorasanti.controller.auditoria;
 
 import java.io.Serializable;
 import java.time.LocalDate;
