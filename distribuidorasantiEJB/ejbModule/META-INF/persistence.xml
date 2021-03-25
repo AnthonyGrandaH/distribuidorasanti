@@ -6,7 +6,8 @@
 		<class>distribuidorasanti.model.core.entities.InvDistribuidore</class>
 		<class>distribuidorasanti.model.core.entities.InvMarca</class>
 		<class>distribuidorasanti.model.core.entities.InvProducto</class>
-		<class>distribuidorasanti.model.core.entities.RegRegistro</class>
+		<class>distribuidorasanti.model.core.entities.RegEgreso</class>
+		<class>distribuidorasanti.model.core.entities.RegIngreso</class>
 		<class>distribuidorasanti.model.core.entities.SegAsignacion</class>
 		<class>distribuidorasanti.model.core.entities.SegModulo</class>
 		<class>distribuidorasanti.model.core.entities.SegUsuario</class>
