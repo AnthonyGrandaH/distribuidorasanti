@@ -35,7 +35,7 @@ public class ManagerVenVenta {
     }
     public int  findUltimaVenta(){
     	List<VenVenta> listaVenta=findAllVenta();
-    	int posicion=listaVenta.size()-1;
+    	int posicion=listaVenta.size();
     	return posicion;
     }
     

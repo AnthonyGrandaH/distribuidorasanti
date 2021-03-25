@@ -68,12 +68,16 @@ public class BeanInventario implements Serializable {
 	
 	public String actionSeleccionarEdicionProducto(InvProducto producto) {
 		edicionProducto=producto;
+		listaDistribuidor=mDistribuidor.findAllDistribuidores();
+		listaMarcas=mMarca.findAllMarca();
 		return "producto_edicion";
 	}
 	
 	public void actionListenerActualizarEdicionProducto() {
 		try {
 			mProducto.actualizarProducto(edicionProducto, idDistribuidor, idMarca);
+	
+		
 			listaProductos=mProducto.findAllProductos();
 			JSFUtil.crearMensajeINFO("Producto Actualizado Exitosamente.");
 		} catch (Exception e) {
