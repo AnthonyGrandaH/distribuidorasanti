@@ -42,15 +42,18 @@
 	</h:form>
 	<p:panel>
 		<h:form>
-			<div>
+				<h:outputText value="Busqueda de productos: " />
+					
 				<div class="ui-inputgroup">
+				<div>
 					<p:inputText placeholder="Nombre Producto"
 						value="#{beanVenCarrito.nombreProducto}" />
+						
 					<p:commandButton icon="pi pi-search" styleClass="ui-button-warning"
 						actionListener="#{beanVenCarrito.actionListenerBuscarProductoByNombre()}"
 						update=":formEdicion1" />
 				</div>
-				<div class="ui-inputgroup">
+				<div >
 					<p:inputText placeholder="Marca Producto"
 						value="#{beanVenCarrito.nombreMarca}" />
 					<p:commandButton icon="pi pi-search" styleClass="ui-button-warning"
