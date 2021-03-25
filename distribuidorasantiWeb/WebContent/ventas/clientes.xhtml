@@ -22,7 +22,7 @@
 	</p:growl>
 	<h:form>
 		<p:menubar>
-			<p:menuitem value="Regresar" icon="pi pi-home" action="/menu" />
+			<p:menuitem value="Regresar" icon="pi pi-home" action="#{beanVenCarrito.actionRegresarMenu()}" />
 			<p:menuitem value="Clientes" icon="pi pi-users" action="#{beanVenClientes.actionMenuCliente()}"/>
 			<p:menuitem value="Ventas" icon="pi pi-plus-circle" action="#{beanVenCarrito.actionMenuProductos()}" />
 			<p:menuitem value="Carrito de Compra" icon="pi pi-plus-circle" action="#{beanVenCarrito.actionMenuCarrito()}" />

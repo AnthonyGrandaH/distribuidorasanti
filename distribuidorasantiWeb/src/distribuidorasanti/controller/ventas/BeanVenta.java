@@ -46,19 +46,19 @@ public class BeanVenta implements Serializable {
 						+ "seleccionado los productos en el carrito de compra");
 				return false;
 			} else {
-
-				
 				nuevaVenta = new VenVenta();
 				nuevaVenta.setVenCliente(nuevoCliente);
 				nuevaVenta.setFechaVen(new Date());
 				nuevaVenta.setVenSubtotal(precioCantidadxProducto);
 				nuevaVenta.setVenIva(precioIva);
 				nuevaVenta.setVenTotal(precioTotal);
-				System.out.println(""+nuevaVenta.getVenTotal());
-				System.out.println(""+nuevoCliente.getCliCedula());
+				System.out.println("Total venta: "+nuevaVenta.getVenTotal());
 				mVenta.insertarCabeceraVenta(nuevaVenta, nuevoCliente.getCliCedula());
-				InvProducto producto;
+				
+				
 				int UltimaIdVenta = mVenta.findUltimaVenta();
+				System.out.println("UltimaVenta: "+UltimaIdVenta);
+				JSFUtil.crearMensajeINFO("Venta Realizada");
 				for (int i = 0; i < carrito.size(); i++) {
 
 					VenDetalleVenta nuevoDetalleVenta = new VenDetalleVenta();
@@ -67,11 +67,10 @@ public class BeanVenta implements Serializable {
 					mDetalleVenta.insertarVentaDetalle(nuevoDetalleVenta, UltimaIdVenta,
 							carrito.get(i).getCodProducto());
 					
-					producto=mProducto.findProductoByCod(carrito.get(i).getCodProducto());
-					producto.setStock(producto.getStock() - carrito.get(i).getCantidad() );
-					mProducto.actualizarProducto(producto, producto.getInvDistribuidore().getIdDistribuidor(), producto.getInvMarca().getIdMarca());
+					nuevoProducto=mProducto.findProductoByCod(carrito.get(i).getCodProducto());
+					nuevoProducto.setStock(nuevoProducto.getStock() - carrito.get(i).getCantidad() );
+					mProducto.actualizarProducto(nuevoProducto, nuevoProducto.getInvDistribuidore().getIdDistribuidor(), nuevoProducto.getInvMarca().getIdMarca());
 				}
-				JSFUtil.crearMensajeINFO("Venta Realizada");
 				return true;
 		
  
@@ -85,7 +84,6 @@ public class BeanVenta implements Serializable {
 		return false;
 	}
 
-	
 
 
 	public List<ProductoDto> getCarrito() {

@@ -29,7 +29,7 @@ public class BeanVenCarrito implements Serializable {
 	@EJB
 	private ManagerVenCarrito mCarrito;
 	@EJB
-	ManagerVenVenta mVenta;
+	private ManagerVenVenta mVenta;
 	@EJB
 	ManagerVenDetalleVenta mDetalleVenta;
 	@EJB
@@ -40,13 +40,12 @@ public class BeanVenCarrito implements Serializable {
     private ProductoDto producto;
     private ProductoDto editarproducto;
     private int cantidad;
+    private InvProducto nuevoProducto;
     private double precioCantidadxProducto=0;
     private double precioIva=0;
     private double precioTotal=0;
-    private VenCliente nuevoCliente;
     private String nombreProducto;
     private String nombreMarca;
-    private BeanVenta beanVenta;
 	private VenVenta nuevaVenta;
 	@PostConstruct
 	
@@ -62,12 +61,23 @@ public class BeanVenCarrito implements Serializable {
 	}
 
 	public String actionMenuProductos() {
+		if(carrito==null) {
+			listado = mCarrito.generarDatosProductos();
+			listadoRespaldo=listado;
+		}else {
 			listado =listadoRespaldo;
+		}
+		
 		
 		
 		return "Ventas";
 	}
-
+	public String actionRegresarMenu() {
+		 carrito=null;
+		 listado = mCarrito.generarDatosProductos();
+		listadoRespaldo=listado;
+	return "/menu";
+}
 	public void actionListenerAgregerProducto(ProductoDto P) {
 		try {
 			carrito = mCarrito.agregarProductoCarrito(carrito, P);
@@ -102,7 +112,7 @@ public class BeanVenCarrito implements Serializable {
 		 confirmacionVenta=actionListenerCrearVenta(nuevoCliente, carrito, precioCantidadxProducto, 
 				 precioIva, precioTotal);
 		 if(confirmacionVenta) {
-			 carrito=new ArrayList<ProductoDto>();
+			 carrito=null;
 			 listado = mCarrito.generarDatosProductos();
 			listadoRespaldo=listado;
 		 }else {
@@ -111,12 +121,6 @@ public class BeanVenCarrito implements Serializable {
 		 
 	 }
 
-	 
-	 
-	 
-	 
-	 
-	 
 	 public boolean actionListenerCrearVenta(VenCliente nuevoCliente, List<ProductoDto> carrito,
 				double precioCantidadxProducto ,double precioIva,double precioTotal ) {
 			try {
@@ -134,7 +138,7 @@ public class BeanVenCarrito implements Serializable {
 					System.out.println("Total venta: "+nuevaVenta.getVenTotal());
 					mVenta.insertarCabeceraVenta(nuevaVenta, nuevoCliente.getCliCedula());
 					
-					InvProducto producto;
+					
 					int UltimaIdVenta = mVenta.findUltimaVenta();
 					System.out.println("UltimaVenta: "+UltimaIdVenta);
 					JSFUtil.crearMensajeINFO("Venta Realizada");
@@ -146,9 +150,9 @@ public class BeanVenCarrito implements Serializable {
 						mDetalleVenta.insertarVentaDetalle(nuevoDetalleVenta, UltimaIdVenta,
 								carrito.get(i).getCodProducto());
 						
-						producto=mProducto.findProductoByCod(carrito.get(i).getCodProducto());
-						producto.setStock(producto.getStock() - carrito.get(i).getCantidad() );
-						mProducto.actualizarProducto(producto, producto.getInvDistribuidore().getIdDistribuidor(), producto.getInvMarca().getIdMarca());
+						nuevoProducto=mProducto.findProductoByCod(carrito.get(i).getCodProducto());
+						nuevoProducto.setStock(nuevoProducto.getStock() - carrito.get(i).getCantidad() );
+						mProducto.actualizarProducto(nuevoProducto, nuevoProducto.getInvDistribuidore().getIdDistribuidor(), nuevoProducto.getInvMarca().getIdMarca());
 					}
 					return true;
 			
@@ -162,7 +166,12 @@ public class BeanVenCarrito implements Serializable {
 			}
 			return false;
 		}
-
+	 
+	 
+	 
+	 
+	 
+	 
 	 
 	 
 	 
@@ -313,22 +322,6 @@ public class BeanVenCarrito implements Serializable {
 
 	public void setPrecioTotal(double precioTotal) {
 		this.precioTotal = precioTotal;
-	}
-
-	public BeanVenta getBeanVenta() {
-		return beanVenta;
-	}
-
-	public void setBeanVenta(BeanVenta beanVenta) {
-		this.beanVenta = beanVenta;
-	}
-
-	public VenCliente getNuevoCliente() {
-		return nuevoCliente;
-	}
-
-	public void setNuevoCliente(VenCliente nuevoCliente) {
-		this.nuevoCliente = nuevoCliente;
 	}
 
 
