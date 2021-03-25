@@ -6,6 +6,10 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+
+import distribuidorasanti.model.core.entities.VenCliente;
+import distribuidorasanti.model.core.entities.VenDetalleVenta;
+import distribuidorasanti.model.core.entities.VenVenta;
 import distribuidorasanti.model.core.managers.ManagerDAO;
 
 
@@ -25,7 +29,6 @@ public class ManagerRegistro {
     public ManagerRegistro() {
         // TODO Auto-generated constructor stub
     }
-    
     
     
 }
