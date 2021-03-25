@@ -11,7 +11,6 @@ import javax.inject.Named;
 import distribuidorasanti.controller.JSFUtil;
 import distribuidorasanti.model.core.entities.InvProducto;
 import distribuidorasanti.model.core.entities.RegEgreso;
-import distribuidorasanti.model.core.entities.RegIngreso;
 import distribuidorasanti.model.core.entities.VenVenta;
 import distribuidorasanti.model.registro.managers.ManagerEgresos;
 import distribuidorasanti.model.registro.managers.ManagerRegIngreso;
@@ -26,6 +25,7 @@ public class BeanRegEgresos implements Serializable {
 	ManagerEgresos mEgreso;
 	private List<RegistroEgresosDTO> listadoEgresos;
 	private List<RegistroEgresosDTO> listadoRespaldo;
+	private List<RegEgreso> listadoEgresosReg;
 	private RegistroEgresosDTO nuevoEgreso;
 	private double total = 0;
 	private int anioEgreso;
@@ -46,6 +46,11 @@ public class BeanRegEgresos implements Serializable {
 		listadoEgresos = mEgreso.findAllRegistroEgresosDTO();
 		listadoRespaldo = listadoEgresos;
 		return "egresos";
+	}
+	
+	public String actionMenuRegistroEgresos() {
+		listadoEgresosReg=mEgreso.findAllEgresos();
+		return "registroegresos";
 	}
 
 	public void actionListenerBuscarRegistroPorFecha() {
@@ -80,6 +85,15 @@ public class BeanRegEgresos implements Serializable {
 			e.printStackTrace();
 		}
 
+	}
+
+	
+	public List<RegEgreso> getListadoEgresosReg() {
+		return listadoEgresosReg;
+	}
+
+	public void setListadoEgresosReg(List<RegEgreso> listadoEgresosReg) {
+		this.listadoEgresosReg = listadoEgresosReg;
 	}
 
 	public List<RegistroEgresosDTO> getListadoEgresos() {

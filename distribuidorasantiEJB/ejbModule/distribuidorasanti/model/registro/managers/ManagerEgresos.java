@@ -32,8 +32,8 @@ public class ManagerEgresos {
         // TODO Auto-generated constructor stub
     }
 
-    public List<RegIngreso> findAllEgresos(){
-    	return mDAO.findAll(InvProducto.class, "idIngresos");
+    public List<RegEgreso> findAllEgresos(){
+    	return mDAO.findAll(RegEgreso.class);
     }
     public void insertarEgresos(RegEgreso nuevoEgreso) throws Exception{
     	
