@@ -25,23 +25,11 @@ public class VenVenta implements Serializable {
 	@Column(name="fecha_ven")
 	private Date fechaVen;
 
-	@Column(name="ven_ciudad")
-	private String venCiudad;
-
-	@Column(name="ven_cuota_pago")
-	private double venCuotaPago;
-
 	@Column(name="ven_iva")
 	private double venIva;
 
-	@Column(name="ven_plazo")
-	private Integer venPlazo;
-
 	@Column(name="ven_subtotal")
 	private double venSubtotal;
-
-	@Column(name="ven_tipo_pago")
-	private String venTipoPago;
 
 	@Column(name="ven_total")
 	private double venTotal;
@@ -74,22 +62,6 @@ public class VenVenta implements Serializable {
 		this.fechaVen = fechaVen;
 	}
 
-	public String getVenCiudad() {
-		return this.venCiudad;
-	}
-
-	public void setVenCiudad(String venCiudad) {
-		this.venCiudad = venCiudad;
-	}
-
-	public double getVenCuotaPago() {
-		return this.venCuotaPago;
-	}
-
-	public void setVenCuotaPago(double venCuotaPago) {
-		this.venCuotaPago = venCuotaPago;
-	}
-
 	public double getVenIva() {
 		return this.venIva;
 	}
@@ -98,28 +70,12 @@ public class VenVenta implements Serializable {
 		this.venIva = venIva;
 	}
 
-	public Integer getVenPlazo() {
-		return this.venPlazo;
-	}
-
-	public void setVenPlazo(Integer venPlazo) {
-		this.venPlazo = venPlazo;
-	}
-
 	public double getVenSubtotal() {
 		return this.venSubtotal;
 	}
 
 	public void setVenSubtotal(double venSubtotal) {
 		this.venSubtotal = venSubtotal;
-	}
-
-	public String getVenTipoPago() {
-		return this.venTipoPago;
-	}
-
-	public void setVenTipoPago(String venTipoPago) {
-		this.venTipoPago = venTipoPago;
 	}
 
 	public double getVenTotal() {
