@@ -6,7 +6,6 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import distribuidorasanti.model.core.entities.RegRegistro;
 import distribuidorasanti.model.core.entities.VenCliente;
 import distribuidorasanti.model.core.entities.VenDetalleVenta;
 import distribuidorasanti.model.core.entities.VenVenta;
@@ -28,8 +27,6 @@ public class ManagerRegistro {
         // TODO Auto-generated constructor stub
     }
     
-    public List<RegRegistro> findAllRegistro(){
-    	return mDAO.findAll(RegRegistro.class,"idContabilidad");
-    }
+   
     
 }
