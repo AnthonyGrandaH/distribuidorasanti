@@ -48,7 +48,7 @@ public class BeanRegIngresos implements Serializable {
 	}
 public String actionMenuRegistroIngresos() {
 	listadoIngreso=mIngreso.findAllIngresos();
-	return "registroingresos.xhtml";
+	return "registroingresos";
 }
 	
 	public void actionListenerBuscarRegistroPorFecha() {
