@@ -31,4 +31,5 @@ public class ManagerRegistro {
     public List<RegRegistro> findAllRegistro(){
     	return mDAO.findAll(RegRegistro.class,"idContabilidad");
     }
+    
 }
