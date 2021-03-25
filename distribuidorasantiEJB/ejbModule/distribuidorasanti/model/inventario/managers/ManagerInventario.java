@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import distribuidorasanti.model.core.entities.InvDistribuidore;
 import distribuidorasanti.model.core.entities.InvMarca;
 import distribuidorasanti.model.core.entities.InvProducto;
+import distribuidorasanti.model.core.entities.VenCliente;
 import distribuidorasanti.model.core.managers.ManagerDAO;
 
 
@@ -26,7 +27,14 @@ ManagerDAO mDAO;
     public ManagerInventario() {
         
     }
- 
+    public InvProducto findProductoByCod(int codProducto) throws Exception{
+    	InvProducto busqProducto= (InvProducto) mDAO.findById(InvProducto.class, codProducto);
+    	if(busqProducto==null) {
+    	 	throw new Exception("Error,Producto no encontrado");
+    	}
+    	return busqProducto;
+    }
+    
     public List<InvProducto> findAllProductos(){
     	return mDAO.findAll(InvProducto.class, "proNombre");
     }

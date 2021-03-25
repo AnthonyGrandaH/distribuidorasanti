@@ -1,6 +1,8 @@
 package distribuidorasanti.controller.ventas;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,8 +11,15 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import distribuidorasanti.controller.JSFUtil;
+import distribuidorasanti.model.core.entities.InvProducto;
+import distribuidorasanti.model.core.entities.VenCliente;
+import distribuidorasanti.model.core.entities.VenDetalleVenta;
+import distribuidorasanti.model.core.entities.VenVenta;
+import distribuidorasanti.model.inventario.managers.ManagerInventario;
 import distribuidorasanti.model.ventas.dtos.ProductoDto;
 import distribuidorasanti.model.ventas.managers.ManagerVenCarrito;
+import distribuidorasanti.model.ventas.managers.ManagerVenDetalleVenta;
+import distribuidorasanti.model.ventas.managers.ManagerVenVenta;
 
 
 @Named
@@ -19,6 +28,12 @@ public class BeanVenCarrito implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@EJB
 	private ManagerVenCarrito mCarrito;
+	@EJB
+	ManagerVenVenta mVenta;
+	@EJB
+	ManagerVenDetalleVenta mDetalleVenta;
+	@EJB
+	ManagerInventario mProducto;
 	private List<ProductoDto> listado;
 	private List<ProductoDto> listadoRespaldo;
 	private List<ProductoDto> carrito;
@@ -28,10 +43,15 @@ public class BeanVenCarrito implements Serializable {
     private double precioCantidadxProducto=0;
     private double precioIva=0;
     private double precioTotal=0;
+    private VenCliente nuevoCliente;
     private String nombreProducto;
     private String nombreMarca;
-
+    private BeanVenta beanVenta;
+	private VenVenta nuevaVenta;
 	@PostConstruct
+	
+	
+	
 	public void inicializar() {
 		listado = mCarrito.generarDatosProductos();
 		listadoRespaldo=listado;
@@ -75,8 +95,74 @@ public class BeanVenCarrito implements Serializable {
 			System.out.println("Producto  seleccionado:"+editarproducto.getCodProducto());
 		}
 
+	 public void actionListenerGenerarVenta(VenCliente nuevoCliente) {
+		 
+	
+		 boolean confirmacionVenta;
+		 confirmacionVenta=actionListenerCrearVenta(nuevoCliente, carrito, precioCantidadxProducto, 
+				 precioIva, precioTotal);
+		 if(confirmacionVenta) {
+			 carrito=new ArrayList<ProductoDto>();
+			 listado = mCarrito.generarDatosProductos();
+			listadoRespaldo=listado;
+		 }else {
+			 
+		 }
+		 
+	 }
 
 	 
+	 
+	 
+	 
+	 
+	 
+	 public boolean actionListenerCrearVenta(VenCliente nuevoCliente, List<ProductoDto> carrito,
+				double precioCantidadxProducto ,double precioIva,double precioTotal ) {
+			try {
+				if (nuevoCliente == null || carrito == null) {
+					JSFUtil.crearMensajeERROR("Debe Ingresar el cliente solicitado y que haya \n "
+							+ "seleccionado los productos en el carrito de compra");
+					return false;
+				} else {
+					nuevaVenta = new VenVenta();
+					nuevaVenta.setVenCliente(nuevoCliente);
+					nuevaVenta.setFechaVen(new Date());
+					nuevaVenta.setVenSubtotal(precioCantidadxProducto);
+					nuevaVenta.setVenIva(precioIva);
+					nuevaVenta.setVenTotal(precioTotal);
+					System.out.println("Total venta: "+nuevaVenta.getVenTotal());
+					mVenta.insertarCabeceraVenta(nuevaVenta, nuevoCliente.getCliCedula());
+					
+					InvProducto producto;
+					int UltimaIdVenta = mVenta.findUltimaVenta();
+					System.out.println("UltimaVenta: "+UltimaIdVenta);
+					JSFUtil.crearMensajeINFO("Venta Realizada");
+					for (int i = 0; i < carrito.size(); i++) {
+
+						VenDetalleVenta nuevoDetalleVenta = new VenDetalleVenta();
+						nuevoDetalleVenta.setCantidadDt(carrito.get(i).getCantidad());
+						nuevoDetalleVenta.setTotalDt(carrito.get(i).getPresioTotal());
+						mDetalleVenta.insertarVentaDetalle(nuevoDetalleVenta, UltimaIdVenta,
+								carrito.get(i).getCodProducto());
+						
+						producto=mProducto.findProductoByCod(carrito.get(i).getCodProducto());
+						producto.setStock(producto.getStock() - carrito.get(i).getCantidad() );
+						mProducto.actualizarProducto(producto, producto.getInvDistribuidore().getIdDistribuidor(), producto.getInvMarca().getIdMarca());
+					}
+					return true;
+			
+	 
+				}
+			
+			} catch (Exception e) {
+				JSFUtil.crearMensajeERROR(e.getMessage());
+				e.printStackTrace();
+
+			}
+			return false;
+		}
+
 	 
 	 
 	 
@@ -227,6 +313,22 @@ public class BeanVenCarrito implements Serializable {
 
 	public void setPrecioTotal(double precioTotal) {
 		this.precioTotal = precioTotal;
+	}
+
+	public BeanVenta getBeanVenta() {
+		return beanVenta;
+	}
+
+	public void setBeanVenta(BeanVenta beanVenta) {
+		this.beanVenta = beanVenta;
+	}
+
+	public VenCliente getNuevoCliente() {
+		return nuevoCliente;
+	}
+
+	public void setNuevoCliente(VenCliente nuevoCliente) {
+		this.nuevoCliente = nuevoCliente;
 	}
 
 

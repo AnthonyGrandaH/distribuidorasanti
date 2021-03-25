@@ -24,6 +24,7 @@ public class ManagerVenVenta {
      */
 	@EJB
     ManagerDAO mDAO;
+	
     public ManagerVenVenta() {
         // TODO Auto-generated constructor stub
     }
@@ -32,8 +33,14 @@ public class ManagerVenVenta {
     public List<VenVenta> findAllVenta(){
     	return mDAO.findAll(VenVenta.class, "idVenta");
     }
+    public int  findUltimaVenta(){
+    	List<VenVenta> listaVenta=findAllVenta();
+    	int posicion=listaVenta.size()-1;
+    	return posicion;
+    }
     
     public void insertarCabeceraVenta(VenVenta nuevaVenta, String cedula) throws Exception {
+    	System.out.println("Cedula manager:"+cedula);
     	VenCliente cliente = (VenCliente)mDAO.findById(VenCliente.class, cedula);
     	nuevaVenta.setVenCliente(cliente);
     	mDAO.insertar(nuevaVenta);

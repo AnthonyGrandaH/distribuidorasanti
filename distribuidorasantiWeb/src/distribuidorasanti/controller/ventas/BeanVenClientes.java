@@ -91,7 +91,7 @@ public class BeanVenClientes implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*
 	public void actionListenerBuscarCLiente(String cedula) {
 		try {
