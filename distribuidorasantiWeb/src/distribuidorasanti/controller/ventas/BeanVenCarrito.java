@@ -25,6 +25,9 @@ public class BeanVenCarrito implements Serializable {
     private ProductoDto producto;
     private ProductoDto editarproducto;
     private int cantidad;
+    private double precioCantidadxProducto=0;
+    private double precioIva=0;
+    private double precioTotal=0;
     private String nombreProducto;
     private String nombreMarca;
 
@@ -39,13 +42,16 @@ public class BeanVenCarrito implements Serializable {
 	}
 
 	public String actionMenuProductos() {
-		listado =listadoRespaldo;
+			listado =listadoRespaldo;
+		
+		
 		return "Ventas";
 	}
 
 	public void actionListenerAgregerProducto(ProductoDto P) {
 		try {
 			carrito = mCarrito.agregarProductoCarrito(carrito, P);
+			actionListenerGenerarSumatoria();
 			JSFUtil.crearMensajeINFO("Producto agregado al carrito");
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage());
@@ -56,6 +62,7 @@ public class BeanVenCarrito implements Serializable {
 	public void actionListenerEliminarCliente(int codProducto) {
 		try {
 			mCarrito.eliminarProducto(codProducto, listado, carrito);
+			actionListenerGenerarSumatoria();
 			JSFUtil.crearMensajeINFO("Producto: "+ codProducto +" eliminado correctamente");
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -109,7 +116,16 @@ public class BeanVenCarrito implements Serializable {
 			}
 		}
 	 
-	 
+	 public void actionListenerGenerarSumatoria() {
+		 if(carrito!=null) {
+			 precioCantidadxProducto=  mCarrito.sumatotaldeProductos(carrito);
+			 precioIva=precioCantidadxProducto*(0.12);
+			 precioTotal=precioCantidadxProducto+precioIva;
+		 }else {
+			 precioCantidadxProducto= 0;
+		 }
+	
+	 }
 		public void actionListenerActualizarProducto() {
 			try {
 				
@@ -117,7 +133,9 @@ public class BeanVenCarrito implements Serializable {
 					JSFUtil.crearMensajeERROR("Solo se ingresa cantidades mayores a 0");
 				}else {
 					mCarrito.actualizarCantidad(editarproducto, listado, carrito);
+					actionListenerGenerarSumatoria();
 					JSFUtil.crearMensajeINFO("Producto modificado correctamente");
+					
 				}
 			
 			} catch (Exception e) {
@@ -183,6 +201,32 @@ public class BeanVenCarrito implements Serializable {
 
 	public void setNombreMarca(String nombreMarca) {
 		this.nombreMarca = nombreMarca;
+	}
+
+	public double getPrecioCantidadxProducto() {
+		return precioCantidadxProducto;
+	}
+
+	public void setPrecioCantidadxProducto(double precioCantidadxProducto) {
+		this.precioCantidadxProducto = precioCantidadxProducto;
+	}
+
+
+
+	public double getPrecioIva() {
+		return precioIva;
+	}
+
+	public void setPrecioIva(double precioIva) {
+		this.precioIva = precioIva;
+	}
+
+	public double getPrecioTotal() {
+		return precioTotal;
+	}
+
+	public void setPrecioTotal(double precioTotal) {
+		this.precioTotal = precioTotal;
 	}
 
 

@@ -24,7 +24,7 @@ public class ManagerVenCarrito {
 	ManagerInventario mInventario;
 	@EJB
 	ManagerDAO mDAO;
-private int posicion;
+	private int posicion;
 
 	/**
 	 * Default constructor.
@@ -46,6 +46,33 @@ private int posicion;
 
 	}
 
+	
+
+	public List<ProductoDto> IngresoProductosCarrito(List<ProductoDto> carrito ) {
+		List<ProductoDto> listado = new ArrayList<ProductoDto>();
+		List<InvProducto> listadoInventario = mInventario.findAllProductos();
+		InvProducto invproducto;
+		ProductoDto productoCarrito;
+		int posicionCarrito=0;
+		for (int i = 0; i < listadoInventario.size(); i++) {
+			invproducto = listadoInventario.get(i);
+			if(findPosicionProductoDtobyCod(carrito,invproducto.getCodProducto())>=0) {
+				productoCarrito=carrito.get(posicion);
+				listado.add(productoCarrito);
+			}else {
+				listado.add(new ProductoDto(invproducto.getCodProducto(), invproducto.getProNombre(),
+						invproducto.getInvMarca().getMarcNombre(), invproducto.getProPresio(), invproducto.getStock()));
+			}
+			
+		}
+		return listado;
+
+	}
+	
+	
+	
+	
+	
 	public ProductoDto findProductoDtobyCod(List<ProductoDto> listado, int codProducto) {
 		for (int i = 0; i < listado.size(); i++) {
 			if (codProducto == listado.get(i).getCodProducto()) {
@@ -86,6 +113,18 @@ private int posicion;
 	}
 	
 	
+	public double sumatotaldeProductos(List<ProductoDto> carrito) {
+		double auxTotal=0;
+		for (int i = 0; i < carrito.size(); i++) {
+			auxTotal=auxTotal+(carrito.get(i).getPresioTotal());
+		}
+		return auxTotal;
+	}
+	
+	
+	
+	
+	
     public void eliminarProducto(int codProducto,List<ProductoDto> lista,List<ProductoDto> carrito) throws Exception{
     int cantidad;
     int stock;
@@ -119,7 +158,7 @@ private int posicion;
             if(cantidadSumatoria+productoEditado.getStock()>=0) {
             	carrito.get(posicionProductoEditado).setCantidad(cantidadeditado);
             	carrito.get(posicionProductoEditado).setStock(cantidadSumatoria+productoEditado.getStock());
-       
+             	carrito.get(posicionProductoEditado).setPresioTotal(cantidadeditado*(carrito.get(posicionProductoEditado).getProPresio()));
             }else {
             	throw new Exception("Error,No puedes comprar mas de lo que hay en stock.");
             }
@@ -128,7 +167,8 @@ private int posicion;
         }else {
         	carrito.get(posicionProductoEditado).setCantidad(cantidadeditado);
         	carrito.get(posicionProductoEditado).setStock(cantidadSumatoria+(carrito.get(posicionProductoEditado).getStock()));
-
+        	carrito.get(posicionProductoEditado).setPresioTotal(cantidadeditado*(carrito.get(posicionProductoEditado).getProPresio()));
+       
         }
 
         
@@ -154,6 +194,7 @@ private int posicion;
 			if ((producto.getStock() - producto.getCantidadIngresada())>= 0) {
 				producto.setStock(producto.getStock() - producto.getCantidadIngresada());
 				producto.setCantidad(producto.getCantidadIngresada());
+				producto.setPresioTotal(producto.getCantidad()*producto.getProPresio());
 				carrito.add(producto);
 				producto.setCantidadIngresada(0);
 			} else {
@@ -168,6 +209,7 @@ private int posicion;
 			if ((producto.getStock() - producto.getCantidadIngresada()) >= 0) {
 				producto.setStock(producto.getStock() - producto.getCantidadIngresada());
 				producto.setCantidad(producto.getCantidadIngresada());
+				producto.setPresioTotal(producto.getCantidad()*producto.getProPresio());
 				carrito.add(producto);
 				producto.setCantidadIngresada(0);
 			} else {
