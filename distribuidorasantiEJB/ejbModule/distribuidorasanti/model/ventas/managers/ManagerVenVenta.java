@@ -39,10 +39,9 @@ public class ManagerVenVenta {
     	return posicion;
     }
     
-    public void insertarCabeceraVenta(VenVenta nuevaVenta, String cedula) throws Exception {
-    	System.out.println("Cedula manager:"+cedula);
-    	VenCliente cliente = (VenCliente)mDAO.findById(VenCliente.class, cedula);
-    	nuevaVenta.setVenCliente(cliente);
+    public void insertarCabeceraVenta(VenVenta nuevaVenta) throws Exception {
+    	
+    
     	mDAO.insertar(nuevaVenta);
     }
     

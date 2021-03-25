@@ -135,8 +135,9 @@ public class BeanVenCarrito implements Serializable {
 					nuevaVenta.setVenSubtotal(precioCantidadxProducto);
 					nuevaVenta.setVenIva(precioIva);
 					nuevaVenta.setVenTotal(precioTotal);
+					nuevaVenta.setVenCliente(nuevoCliente);
 					System.out.println("Total venta: "+nuevaVenta.getVenTotal());
-					mVenta.insertarCabeceraVenta(nuevaVenta, nuevoCliente.getCliCedula());
+					mVenta.insertarCabeceraVenta(nuevaVenta);
 					
 					
 					int UltimaIdVenta = mVenta.findUltimaVenta();
