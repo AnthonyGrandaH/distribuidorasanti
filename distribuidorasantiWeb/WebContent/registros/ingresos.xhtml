@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Registro de Ingresos</title>
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<div align="center">
+<p:panel>
+	<p:staticMessage severity="info" summary="Módulo Registros" style="width: 100%" />
+		</p:panel>
+	</div>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="/menu" />
+			<p:menuitem value="Egresos" icon="pi pi-user-plus" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+	<h:form>
+			<div>
+		<div class="ui-inputgroup">
+			<h:panelGrid columns="2">
+				<h:outputText value="Ingreo de Mes" />
+				<p:selectOneMenu id="option" value="#{beanRegIngresos.mesIngreso}">
+					<f:selectItem itemLabel="Enero" itemValue="1" />
+					<f:selectItem itemLabel="Febrero" itemValue="2" />
+					<f:selectItem itemLabel="Marzo" itemValue="3" />
+					<f:selectItem itemLabel="Abril" itemValue="4" />
+					<f:selectItem itemLabel="Mayo" itemValue="5" />
+					<f:selectItem itemLabel="Junio" itemValue="6" />
+					<f:selectItem itemLabel="Julio" itemValue="7" />
+					<f:selectItem itemLabel="Agosto" itemValue="8" />
+					<f:selectItem itemLabel="Septiembre" itemValue="9" />
+					<f:selectItem itemLabel="Octubre" itemValue="10" />
+					<f:selectItem itemLabel="Noviembre" itemValue="11" />
+					<f:selectItem itemLabel="Diciembre" itemValue="12" />
+
+				</p:selectOneMenu>
+				<h:outputText value="Ingreso de año" />
+				<p:spinner value="#{beanRegIngresos.anioIngreso}" required="true"
+					requiredMessage="Ingrese la cantidad" min="1900" />
+	         <h:outputText value="Opciones: " />
+	          <h:outputText value="" />
+			<p:commandButton value="Buscar Ingresos" icon="pi pi-search"
+				actionListener="#{beanRegIngresos.actionListenerBuscarRegistroPorFecha()}" update=":formEdicion1"/>
+			
+			<p:commandButton value="Guardar Registro" icon="pi pi-save"
+				actionListener="#{beanRegIngresos.actionListenerCrearRegistroIngreso()}" update=":formEdicion1"/>
+			</h:panelGrid>
+			
+		</div>
+
+	</div>
+	</h:form>
+		<h:form id="formEdicion1" >
+		 <h:outputText value="Total: " />
+			    <h:outputText value="#{beanRegIngresos.total}" >
+			    <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+			    </h:outputText>
+			<p:dataTable value="#{beanRegIngresos.listadoIngresos}" var="ingreso"
+				paginator="true" rows="5">
+				<p:column headerText="ID Factura">
+					<h:outputText value="#{ingreso.idVenta}" />
+				</p:column>
+				<p:column headerText="Cedula">
+					<h:outputText value="#{ingreso.cedula}" />
+				</p:column>
+				<p:column headerText="Fecha de Venta">
+					<h:outputText value="#{ingreso.fechaVen}" />
+				</p:column>
+				<p:column headerText="Total">
+					<h:outputText value="#{ingreso.venTotal}" />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+		responsive="true" width="350">
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no ui-button-flat" />
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" />
+	</p:confirmDialog>
+</body>
+</html>
