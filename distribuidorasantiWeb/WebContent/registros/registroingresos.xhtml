@@ -9,21 +9,23 @@
 		type="preRenderView"></f:event>
 </f:metadata>
 <h:head>
-	<title>Menú Registros</title>
+	<title>Registro de Ingresos</title>
 </h:head>
 <body>
-<div align="center">
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<div align="center">
 <p:panel>
-	<p:staticMessage severity="info" summary="Módulo Registros" style="width: 100%" />
+	<p:staticMessage severity="info" summary="Muestra de los Registros de Ingresos" style="width: 100%" />
 		</p:panel>
 	</div>
-	<h:form>
+		<h:form>
 		<p:menubar>
-		<p:menuitem value="Regresar" icon="pi pi-home" action="/menu" />
-			<p:menuitem value="Ingresos" icon="pi pi-plus" action="#{beanRegIngresos.actionMenuIngresos()}"/>
+		<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+		<p:menuitem value="Ingresos" icon="pi pi-plus" action="#{beanRegIngresos.actionMenuIngresos()}"/>
 			<p:menuitem value="Registro de Ingresos" icon="pi pi-plus" action="#{beanRegIngresos.actionMenuRegistroIngresos()}"/>
 			<p:menuitem value="Egresos" icon="pi pi-minus" action="#{beanRegEgresos.actionMenuEgresos()}"/>
-			
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
 					icon="pi pi-user">
@@ -33,9 +35,26 @@
 				</p:menuButton>
 			</f:facet>
 		</p:menubar>
-		<p:staticMessage severity="info" summary="Módulo de Registros"></p:staticMessage>
 	</h:form>
-	<div>
-	</div>
+	<p:panel>
+	
+		<h:form >
+		 <h:outputText value="Tabla de Ingresos: " />
+			<p:dataTable value="#{beanRegIngresos.listadoIngreso}" var="ingreso"
+				paginator="true" rows="5">
+				<p:column headerText="ID ">
+					<h:outputText value="#{ingreso.idIngresos}" />
+				</p:column>
+				<p:column headerText="Fecha de Consulta">
+			<h:outputText value="#{ingreso.fechaconsulta}"/>
+				</p:column>
+				<p:column headerText="Total de Ingresos">
+				<h:outputText value="#{ingreso.totalIngresos}"/>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+	
 </body>
 </html>

@@ -58,7 +58,7 @@ public class BeanRegEgresos implements Serializable {
 			listadoEgresos = listadoRespaldo;
 			listadoEgresos = mEgreso.findAllRegistroByFecha(listadoEgresos, mesEgreso, anioEgreso);
 			total = mEgreso.getPrecioTotal();
-			JSFUtil.crearMensajeINFO("Registro generado exitosamente");
+			JSFUtil.crearMensajeINFO("Busqueda Completada");
 		}
 	}
 
@@ -68,7 +68,7 @@ public class BeanRegEgresos implements Serializable {
 				JSFUtil.crearMensajeERROR("No se puede Generar el Reporte: Total:0");
 			} else {
 				RegEgreso egresoNuevo = new RegEgreso();
-				egresoNuevo.setFechaConsulta("" + anioEgreso);
+				egresoNuevo.setFechaConsulta(mesEgreso+"/"+ anioEgreso);
 				egresoNuevo.setTotalEgresos(total);
 				mEgreso.insertarEgresos(egresoNuevo);
 				listadoEgresos = mEgreso.findAllRegistroEgresosDTO();

@@ -17,13 +17,15 @@
 	</p:growl>
 	<div align="center">
 <p:panel>
-	<p:staticMessage severity="info" summary="Módulo Registros" style="width: 100%" />
+	<p:staticMessage severity="info" summary="Generacion de Registro de Egreso" style="width: 100%" />
 		</p:panel>
 	</div>
 	<h:form>
 		<p:menubar>
-			<p:menuitem value="Regresar" icon="pi pi-home" action="/menu" />
-			<p:menuitem value="Egresos" icon="pi pi-user-plus" />
+		<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<p:menuitem value="Ingresos" icon="pi pi-plus" action="#{beanRegIngresos.actionMenuIngresos()}"/>
+			<p:menuitem value="Registro de Ingresos" icon="pi pi-plus" action="#{beanRegIngresos.actionMenuRegistroIngresos()}"/>
+			<p:menuitem value="Egresos" icon="pi pi-minus" action="#{beanRegEgresos.actionMenuEgresos()}"/>
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
 					icon="pi pi-user">

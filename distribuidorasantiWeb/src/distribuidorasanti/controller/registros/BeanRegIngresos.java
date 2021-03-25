@@ -21,8 +21,9 @@ import distribuidorasanti.model.ventas.dtos.ProductoDto;
 public class BeanRegIngresos implements Serializable {
  @EJB
  ManagerRegIngreso mIngreso;
-	private List<RegistroIngresosDTO> listadoIngresos;
+	private List<RegistroIngresosDTO> listadoIngresosDTO;
 	private List< RegistroIngresosDTO> listadoRespaldo;
+	private List <RegIngreso> listadoIngreso;
  private RegistroIngresosDTO nuevoIngreso;
  private double total=0;
  private int anioIngreso;
@@ -36,28 +37,31 @@ public class BeanRegIngresos implements Serializable {
 	
 	
 	public void inicializar() {
-		listadoIngresos = mIngreso.findAllRegistroIngresoDTO();
-		listadoRespaldo=listadoIngresos;
+		listadoIngresosDTO = mIngreso.findAllRegistroIngresoDTO();
+		listadoRespaldo=listadoIngresosDTO;
 	}
 
 	public String actionMenuIngresos() {
-		listadoIngresos = mIngreso.findAllRegistroIngresoDTO();
-		listadoRespaldo=listadoIngresos;
+		listadoIngresosDTO = mIngreso.findAllRegistroIngresoDTO();
+		listadoRespaldo=listadoIngresosDTO;
 		return "ingresos";
 	}
-
+public String actionMenuRegistroIngresos() {
+	listadoIngreso=mIngreso.findAllIngresos();
+	return "registroingresos.xhtml";
+}
 	
 	public void actionListenerBuscarRegistroPorFecha() {
 		System.out.println("Mes Ingresado "+mesIngreso);
 	    System.out.println("Año Ingresado"+ anioIngreso);
 		if(anioIngreso==0) {
-			listadoIngresos=listadoRespaldo;
+			listadoIngresosDTO=listadoRespaldo;
 			total=0;
 		}else {
-			listadoIngresos=listadoRespaldo;
-			listadoIngresos=mIngreso.findAllRegistroByFecha(listadoIngresos, mesIngreso, anioIngreso);
+			listadoIngresosDTO=listadoRespaldo;
+			listadoIngresosDTO=mIngreso.findAllRegistroByFecha(listadoIngresosDTO, mesIngreso, anioIngreso);
 			total=mIngreso.getPrecioTotal();
-			JSFUtil.crearMensajeINFO("Registro generado exitosamente");
+			JSFUtil.crearMensajeINFO("Busqueda Completada");
 		}
 	}
 	
@@ -67,11 +71,11 @@ public class BeanRegIngresos implements Serializable {
 				JSFUtil.crearMensajeERROR("No se puede Generar el Reporte: Total:0");
 			}else {
 			RegIngreso ingresoNuevo=new RegIngreso();
-			ingresoNuevo.setFechaconsulta(""+anioIngreso);
+			ingresoNuevo.setFechaconsulta(mesIngreso+"/"+anioIngreso);
 			ingresoNuevo.setTotalIngresos(total);
 			mIngreso.insertarIngreso(ingresoNuevo);
-			listadoIngresos = mIngreso.findAllRegistroIngresoDTO();
-			listadoRespaldo=listadoIngresos;
+			listadoIngresosDTO = mIngreso.findAllRegistroIngresoDTO();
+			listadoRespaldo=listadoIngresosDTO;
 			JSFUtil.crearMensajeINFO("Registro Ingresado Existosamente");
 			}
 		} catch (Exception e) {
@@ -89,12 +93,21 @@ public class BeanRegIngresos implements Serializable {
 	
 	
 	
-	public List<RegistroIngresosDTO> getListadoIngresos() {
-		return listadoIngresos;
+
+	public List<RegistroIngresosDTO> getListadoIngresosDTO() {
+		return listadoIngresosDTO;
 	}
 
-	public void setListadoIngresos(List<RegistroIngresosDTO> listadoIngresos) {
-		this.listadoIngresos = listadoIngresos;
+	public void setListadoIngresosDTO(List<RegistroIngresosDTO> listadoIngresosDTO) {
+		this.listadoIngresosDTO = listadoIngresosDTO;
+	}
+
+	public List<RegIngreso> getListadoIngreso() {
+		return listadoIngreso;
+	}
+
+	public void setListadoIngreso(List<RegIngreso> listadoIngreso) {
+		this.listadoIngreso = listadoIngreso;
 	}
 
 	public List<RegistroIngresosDTO> getListadoRespaldo() {

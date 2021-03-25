@@ -36,7 +36,7 @@ public class ManagerRegIngreso {
     
     
     public List<RegIngreso> findAllIngresos(){
-    	return mDAO.findAll(InvProducto.class, "idIngresos");
+    	return mDAO.findAll(RegIngreso.class);
     }
     public void insertarIngreso(RegIngreso nuevoIngreso) throws Exception{
     	
