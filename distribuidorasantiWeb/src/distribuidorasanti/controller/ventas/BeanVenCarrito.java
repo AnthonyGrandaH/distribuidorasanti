@@ -76,6 +76,7 @@ public class BeanVenCarrito implements Serializable {
 		precioCantidadxProducto = 0;
 		precioIva = 0;
 		precioTotal = 0;
+		
 		return "/menu";
 	}
 
@@ -119,6 +120,9 @@ public class BeanVenCarrito implements Serializable {
 				listado = mCarrito.generarDatosProductos();
 				listadoRespaldo = listado;
 				JSFUtil.crearMensajeINFO("Venta Realizada");
+				precioCantidadxProducto = 0;
+				precioIva = 0;
+				precioTotal = 0;
 			} else {
 				JSFUtil.crearMensajeERROR("Compra No realizada");
 			}
