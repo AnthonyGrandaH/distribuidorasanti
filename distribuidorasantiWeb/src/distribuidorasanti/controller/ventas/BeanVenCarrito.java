@@ -109,18 +109,23 @@ public class BeanVenCarrito implements Serializable {
 	}
 
 	public void actionListenerGenerarVenta(VenCliente nuevoCliente) {
+		try {
 
-		boolean confirmacionVenta;
-		confirmacionVenta = actionListenerCrearVenta(nuevoCliente, carrito, precioCantidadxProducto, precioIva,
-				precioTotal);
-		if (confirmacionVenta) {
-			carrito = null;
-			listado = mCarrito.generarDatosProductos();
-			listadoRespaldo = listado;
-		} else {
-
+			boolean confirmacionVenta;
+			confirmacionVenta = actionListenerCrearVenta(nuevoCliente, carrito, precioCantidadxProducto, precioIva,
+					precioTotal);
+			if (confirmacionVenta) {
+				carrito = null;
+				listado = mCarrito.generarDatosProductos();
+				listadoRespaldo = listado;
+				JSFUtil.crearMensajeINFO("Venta Realizada");
+			} else {
+				JSFUtil.crearMensajeERROR("Compra No realizada");
+			}
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR(e.getMessage());
+			e.printStackTrace();
 		}
-
 	}
 
 	public boolean actionListenerCrearVenta(VenCliente nuevoCliente, List<ProductoDto> carrito,
@@ -143,7 +148,6 @@ public class BeanVenCarrito implements Serializable {
 
 				int UltimaIdVenta = mVenta.findUltimaVenta();
 				System.out.println("UltimaVenta: " + UltimaIdVenta);
-				JSFUtil.crearMensajeINFO("Venta Realizada");
 				for (int i = 0; i < carrito.size(); i++) {
 
 					VenDetalleVenta nuevoDetalleVenta = new VenDetalleVenta();
